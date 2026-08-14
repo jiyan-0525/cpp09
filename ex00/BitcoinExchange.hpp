@@ -18,7 +18,7 @@ public:
     void read_data(const std::string& filename);
 
 private:
-    std::map<std::string, double> data;
+    std::map<std::string, double> _data;
 };
 
 #endif

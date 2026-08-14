@@ -34,10 +34,10 @@ void BitcoinExchange::read_data(const std::string& filename) {
             std::cerr << "Error: invalid line format" << std::endl;
             continue;
         }
-        std::string date = line.substr(0, 10);
+        std::string _date = line.substr(0, 10);
         double value = std::stod(line.substr(12));
-        if (data.find(date) != data.end()) {
-            std::cout << date << " => " << value << " = " << value * data[date] << std::endl;
+        if (_data.find(_date) != _data.end()) {
+            std::cout << _date << " => " << value << " = " << value * _data[_date] << std::endl;
         } else {
             std::cerr << "Error: date not found in data" << std::endl;
         }
