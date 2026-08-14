@@ -15,7 +15,7 @@ public:
     BitcoinExchange& operator=(const BitcoinExchange& other);
     ~BitcoinExchange();
     
-    void run(const std::string& filename);
+    void read_data(const std::string& filename);
 
 private:
     std::map<std::string, double> data;

@@ -22,3 +22,25 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& other) {
 }
 
 BitcoinExchange::~BitcoinExchange() {}
+
+void BitcoinExchange::read_data(const std::string& filename) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        throw std::runtime_error("Error: could not open file");
+    }
+    std::string line;
+    while (std::getline(file, line)) {
+        if (line != "date | value") {
+            std::cerr << "Error: invalid line format" << std::endl;
+            continue;
+        }
+        std::string date = line.substr(0, 10);
+        double value = std::stod(line.substr(12));
+        if (data.find(date) != data.end()) {
+            std::cout << date << " => " << value << " = " << value * data[date] << std::endl;
+        } else {
+            std::cerr << "Error: date not found in data" << std::endl;
+        }
+    }
+}
+
