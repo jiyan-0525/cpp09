@@ -1,19 +1,24 @@
 NAME = btc
 
 SRCS = main.cpp BitcoinExchange.cpp
-OBJS = $(SRCS:.cpp=.o)
+OBJS = $(SRCS:%.cpp=object/%.o)
 
-CXX = 	c++
+CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++17
 
-all: $(NAME)
+all: object $(NAME)
+
+object:
+	mkdir -p object
+
 $(NAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJS)
-%.o: %.cpp
+
+object/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS)
+	rm -rf object
 
 fclean: clean
 	rm -f $(NAME)
