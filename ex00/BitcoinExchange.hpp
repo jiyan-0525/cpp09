@@ -18,8 +18,8 @@ public:
     BitcoinExchange& operator=(const BitcoinExchange& other);
     ~BitcoinExchange();
 
-
 private:
     std::map<std::string, double> _data;
     
+
 #endif
