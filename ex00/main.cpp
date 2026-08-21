@@ -5,10 +5,11 @@ int main(int ac, char *av[]) {
         std::cerr << "Error: Could not open file." << std::endl;
         return 1;
     }
-
-    std::ifstream file(av[1]);
-    if (!file.is_open()) {
-        std::cerr << "Error: Could not open file." << std::endl;
+    try {
+        BitcoinExchange exchange("data.csv");
+        exchange.processInput(av[1]);
+    } catch (const std::exception& e) {
+        std::cerr << e.what() << std::endl;
         return 1;
     }
     return 0;
