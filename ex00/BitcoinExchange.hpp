@@ -18,8 +18,10 @@ public:
     BitcoinExchange& operator=(const BitcoinExchange& other);
     ~BitcoinExchange();
 
+    void evaluate(const std::string& filename) const;
+
 private:
     std::map<std::string, double> _data;
     
-
+};
 #endif
