@@ -1,14 +1,14 @@
 #ifndef BITCOINEXCHANGE_HPP
 # define BITCOINEXCHANGE_HPP
-
 #include <map>
-#include <string>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <stdexcept>
 #include <cctype>
+#include <string>
 #include <cstdlib>
+#include <sstream>
+#include <fstream>
+#include <charconv>
+#include <iostream>
+#include <stdexcept>
 
 class BitcoinExchange {
 public:
@@ -18,10 +18,14 @@ public:
     BitcoinExchange& operator=(const BitcoinExchange& other);
     ~BitcoinExchange();
 
-    void evaluate(const std::string& filename) const;
+    void readData(const std::string& filename) const;
 
 private:
     std::map<std::string, double> _data;
+
+    bool isValidDate(const std::string& date) const;
+    bool isValidValue(const std::string& valstr, float& outval) const;
     
 };
+
 #endif

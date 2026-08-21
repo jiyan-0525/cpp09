@@ -3,7 +3,7 @@
 BitcoinExchange::BitcoinExchange() {}
 
 BitcoinExchange::BitcoinExchange(const std::string& filename) {
-    read_data(filename);
+    readData(filename);
 }
 
 BitcoinExchange::BitcoinExchange(const BitcoinExchange& other) {
@@ -20,46 +20,64 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& other) {
 BitcoinExchange::~BitcoinExchange() {}
 
 bool isValidDate(const std::string& date) {
-    ....
+    if (date.length() != 10 || date[4] != '-' || date[7] != '-') {
+        return false;
+    }
+    if (!std::isdigit(date[0]) || !std::isdigit(date[1]) || 
+        !std::isdigit(date[2]) || !std::isdigit(date[3]) ||
+        !std::isdigit(date[5]) || !std::isdigit(date[6]) ||
+        !std::isdigit(date[8]) || !std::isdigit(date[9])) {
+        return false;
+    }
     return true;
 }
 
 bool isValidValue(const std::string& valstr, float& outval) {
-    .....
+    if(valstr.empty()) {
+        std::cerr << "Error: empty value." << std::endl;
+        return false;
+    }
+    const char *start = valstr.data();
+    const char *end = valstr.data() + valstr.size();
+
+    auto [ptr, ec] = std::from_chars(start, end, outval);
+    if (ec != std::errc() || ptr != end) {
+        std::cerr << "Error: invalid value => " << valstr << std::endl;
+        return false;
+    }
+    if (outval < 0) {
+        std::cerr << "Error: negative value => " << valstr << std::endl;
+        return false;
+    }
+    if (outval > 1000) {
+        std::cerr << "Error: value too large => " << valstr << std::endl;
+        return false;
+    }
     return true;
 }
 
-int main(int ac, char *av[]) {
-    if (ac != 2) {
-        std::cerr << "Error: Could not open file." << std::endl;
-        return 1;
-    }
+void BitcoinExchange::readData(const std::string& filename) const {
+    std::ifstream file(filename);
 
-    std::ifstream file(av[1]);
     if (!file.is_open()) {
-        std::cerr << "Error: Could not open file." << std::endl;
-        return 1;
+        throw std::runtime_error("Error: Could not open file.");
     }
 
     std::string line;
 
     while (std::getline(file, line)) {
-        size_t delimpos = line.find("|");
-        if (delimpos == std::string::npos) {
-            std::cerr << "Error: bad input => " << line << std::endl;
-            continue; 
-        }
-        std::string dateStr = line.substr(0, delimpos);
-        std::string valStr = line.substr(delimpos + 3);
-
-        float value;
-        if (!isValidDate(dateStr)) {
-            std::cerr << "Error: bad date => " << dateStr << std::endl;
-        } else if (!isValidValue(valStr, value)) {
-            // 根据具体错误显示提示
+        std::istringstream iss(line);
+        std::string date, valueStr;
+        if (std::getline(iss, date, ',') && std::getline(iss, valueStr)) {
+            float value;
+            if (!isValidDate(date) || !isValidValue(valueStr, value)) {
+                std::cerr << "Error: Invalid data in file." << std::endl;
+                continue;
+            }
+            _data[date] = value;
         } else {
-            // 一切正常，可以结合你的数据库逻辑进行处理
+            std::cerr << "Error: Invalid line format => " << line << std::endl;
         }
     }
-    return 0;
+    file.close();
 }
