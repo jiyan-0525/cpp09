@@ -1,4 +1,4 @@
-NAME = 
+NAME = PmergeMe
 
 SRCS = main.cpp
 OBJS = $(SRCS:%.cpp=object/%.o)
