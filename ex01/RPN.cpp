@@ -40,7 +40,6 @@ void RPN::performOperation(const std::string& operatorToken) {
     } else {
         throw std::runtime_error("Unknown operator: " + operatorToken);
     }
-
     _stack.push(result);
 }
 
