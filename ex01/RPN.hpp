@@ -9,6 +9,7 @@ class RPN {
 public:
     RPN();
     RPN(const RPN& other);
+    RPN(const std::string& expression);
     RPN& operator=(const RPN& other);
     ~RPN();
 
