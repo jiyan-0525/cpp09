@@ -152,7 +152,6 @@ std::vector<int> PmergeMe::mergeinsertVector(const std::vector<int>& vec) {
 
     if (hasleftover)
         chain.insert(std::lower_bound(chain.begin(), chain.end(), leftover), leftover);
-
     return chain;
 }
 
@@ -187,7 +186,6 @@ std::deque<int> PmergeMe::mergeinsertDeque(const std::deque<int>& deq) {
 
     if (hasleftover)
         chain.insert(std::lower_bound(chain.begin(), chain.end(), leftover), leftover);
-
     return chain;
 }
 
