@@ -34,7 +34,7 @@ void PmergeMe::sortPairsByLargeVector(std::vector<Pair>& pairs) {
     if (pairs.size() <= 1)
         return;
 
-    std::size_t mid = pairs.size() / 2;
+    size_t mid = pairs.size() / 2;
     std::vector<Pair> left(pairs.begin(), pairs.begin() + mid);
     std::vector<Pair> right(pairs.begin() + mid, pairs.end());
 
@@ -43,7 +43,7 @@ void PmergeMe::sortPairsByLargeVector(std::vector<Pair>& pairs) {
 
     std::vector<Pair> merged;
     merged.reserve(pairs.size());
-    std::size_t i = 0, j = 0;
+    size_t i = 0, j = 0;
     while (i < left.size() && j < right.size()) {
         if (pairLargeLess(right[j], left[i]))
             merged.push_back(right[j++]);
@@ -62,7 +62,7 @@ void PmergeMe::sortPairsByLargeDeque(std::deque<Pair>& pairs) {
     if (pairs.size() <= 1)
         return;
 
-    std::size_t mid = pairs.size() / 2;
+    size_t mid = pairs.size() / 2;
     std::deque<Pair> left(pairs.begin(), pairs.begin() + mid);
     std::deque<Pair> right(pairs.begin() + mid, pairs.end());
 
@@ -70,7 +70,7 @@ void PmergeMe::sortPairsByLargeDeque(std::deque<Pair>& pairs) {
     sortPairsByLargeDeque(right);
 
     std::deque<Pair> merged;
-    std::size_t i = 0, j = 0;
+    size_t i = 0, j = 0;
     while (i < left.size() && j < right.size()) {
         if (pairLargeLess(right[j], left[i]))
             merged.push_back(right[j++]);
@@ -85,37 +85,37 @@ void PmergeMe::sortPairsByLargeDeque(std::deque<Pair>& pairs) {
     pairs.swap(merged);
 }
 
-std::vector<std::size_t> PmergeMe::jacobsthalinsert(std::size_t n) {
+std::vector<size_t> PmergeMe::jacobsthalinsert(size_t n) {
     if (n <= 1)
-        return std::vector<std::size_t>();
+        return std::vector<size_t>();
 
-    std::vector<std::size_t> jacob;
-    std::size_t a = 0, b = 1;
+    std::vector<size_t> jacob;
+    size_t a = 0, b = 1;
     jacob.push_back(a);
     jacob.push_back(b);
     while (true) {
-        std::size_t next = b + 2 * a;
+        size_t next = b + 2 * a;
         if (next > n) break;
         jacob.push_back(next);
         a = b;
         b = next;
     }
 
-    std::vector<std::size_t> order;
+    std::vector<size_t> order;
     std::vector<bool> used(n, false);
     used[0] = true;
 
-    for (std::size_t k = 1; k < jacob.size(); ++k) {
-        std::size_t hi = jacob[k] < n - 1 ? jacob[k] : n - 1;
-        std::size_t lo = jacob[k - 1];
-        for (std::size_t i = hi; i > lo; --i) {
+    for (size_t k = 1; k < jacob.size(); ++k) {
+        size_t hi = jacob[k] < n - 1 ? jacob[k] : n - 1;
+        size_t lo = jacob[k - 1];
+        for (size_t i = hi; i > lo; --i) {
             if (i < n && !used[i]) {
                 used[i] = true;
                 order.push_back(i);
             }
         }
     }
-    for (std::size_t i = 1; i < n; ++i)
+    for (size_t i = 1; i < n; ++i)
         if (!used[i]) order.push_back(i);
     return order;
 }
@@ -125,7 +125,7 @@ std::vector<int> PmergeMe::mergeinsertVector(const std::vector<int>& vec) {
         return vec;
 
     std::vector<Pair> pairs;
-    for (std::size_t i = 0; i + 1 < vec.size(); i += 2) {
+    for (size_t i = 0; i + 1 < vec.size(); i += 2) {
         if (vec[i] < vec[i + 1])
             pairs.push_back(Pair{vec[i], vec[i + 1]});
         else
@@ -138,14 +138,14 @@ std::vector<int> PmergeMe::mergeinsertVector(const std::vector<int>& vec) {
 
     std::vector<int> chain;
     chain.reserve(vec.size());
-    for (std::size_t i = 0; i < pairs.size(); ++i)
+    for (size_t i = 0; i < pairs.size(); ++i)
         chain.push_back(pairs[i].large);
 
     if (!pairs.empty())
         chain.insert(chain.begin(), pairs[0].small);
 
-    std::vector<std::size_t> order = jacobsthalinsert(pairs.size());
-    for (std::size_t idx = 0; idx < order.size(); ++idx) {
+    std::vector<size_t> order = jacobsthalinsert(pairs.size());
+    for (size_t idx = 0; idx < order.size(); ++idx) {
         int val = pairs[order[idx]].small;
         chain.insert(std::lower_bound(chain.begin(), chain.end(), val), val);
     }
@@ -161,7 +161,7 @@ std::deque<int> PmergeMe::mergeinsertDeque(const std::deque<int>& deq) {
         return deq;
 
     std::deque<Pair> pairs;
-    for (std::size_t i = 0; i + 1 < deq.size(); i += 2) {
+    for (size_t i = 0; i + 1 < deq.size(); i += 2) {
         if (deq[i] < deq[i + 1])
             pairs.push_back(Pair{deq[i], deq[i + 1]});
         else
@@ -173,14 +173,14 @@ std::deque<int> PmergeMe::mergeinsertDeque(const std::deque<int>& deq) {
     sortPairsByLargeDeque(pairs);
 
     std::deque<int> chain;
-    for (std::size_t i = 0; i < pairs.size(); ++i)
+    for (size_t i = 0; i < pairs.size(); ++i)
         chain.push_back(pairs[i].large);
 
     if (!pairs.empty())
         chain.push_front(pairs[0].small);
 
-    std::vector<std::size_t> order = jacobsthalinsert(pairs.size());
-    for (std::size_t idx = 0; idx < order.size(); ++idx) {
+    std::vector<size_t> order = jacobsthalinsert(pairs.size());
+    for (size_t idx = 0; idx < order.size(); ++idx) {
         int val = pairs[order[idx]].small;
         chain.insert(std::lower_bound(chain.begin(), chain.end(), val), val);
     }

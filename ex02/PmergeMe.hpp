@@ -28,11 +28,11 @@ private:
     std::vector<int> _vector;
     std::deque<int> _deque;
 
-    static std::vector<int> mergeinsertVector(const std::vector<int>& vec);
-    static std::deque<int> mergeinsertDeque(const std::deque<int>& deq);
-    static std::vector<std::size_t> jacobsthalinsert(std::size_t n);
-    static void sortPairsByLargeVector(std::vector<Pair>& pairs);
-    static void sortPairsByLargeDeque(std::deque<Pair>& pairs);
+    std::vector<int> mergeinsertVector(const std::vector<int>& vec);
+    std::deque<int> mergeinsertDeque(const std::deque<int>& deq);
+    std::vector<size_t> jacobsthalinsert(size_t n);
+    void sortPairsByLargeVector(std::vector<Pair>& pairs);
+    void sortPairsByLargeDeque(std::deque<Pair>& pairs);
 };
 
 #endif
