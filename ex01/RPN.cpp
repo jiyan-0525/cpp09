@@ -4,7 +4,7 @@ RPN::RPN() {}
 
 RPN::RPN(const RPN& other) : _stack(other._stack) {}
 
-PRN::RPN(const std::string& expression) {
+RPN::RPN(const std::string& expression) {
     evaluate(expression);
 }
 
